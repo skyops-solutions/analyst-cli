@@ -1,0 +1,17 @@
+[meta]
+name = "strategy"
+description = "Competitive response and business strategy"
+
+[fields]
+context = "Company name, industry, size, and key product"
+background = "Competitive event, market pressure, or strategic challenge"
+request = "What strategic output is needed"
+
+[model]
+default = "gemini-2.5-flash"
+max_tokens = 1500
+context_window = 10
+
+[output]
+format = "structured"
+sections = ["Situation Analysis", "Strategic Options", "Recommended Actions", "Risks"]

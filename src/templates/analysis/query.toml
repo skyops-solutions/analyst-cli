@@ -1,0 +1,17 @@
+[meta]
+name = "analysis"
+description = "Market and business analysis"
+
+[fields]
+context = "Company name, industry, and market position"
+background = "The situation or trend to be analyzed"
+request = "What analytical output is needed"
+
+[model]
+default = "gemini-1.5-pro"
+max_tokens = 2048
+context_window = 8
+
+[output]
+format = "structured"
+sections = ["Market Context", "Key Findings", "Implications", "Open Questions"]

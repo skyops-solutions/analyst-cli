@@ -1,0 +1,16 @@
+[meta]
+name = "document"
+description = "Client-ready business document generation"
+
+[fields]
+context = "Company name, audience, and document purpose"
+background = "Context the document should address"
+request = "The document to produce (e.g. proposal, brief, memo)"
+
+[model]
+default = "gemini-2.5-flash"
+max_tokens = 2048
+context_window = 6
+
+[output]
+format = "document"

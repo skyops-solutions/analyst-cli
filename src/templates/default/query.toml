@@ -1,0 +1,13 @@
+[meta]
+name = "default"
+description = "General-purpose business query"
+
+[fields]
+context = "Company name, industry, and basic product description"
+background = "Current situation, problem, or competitive event"
+request = "What the user needs: strategy, document, or analysis"
+
+[model]
+default = "gemini-2.5-flash"
+max_tokens = 1024
+context_window = 10

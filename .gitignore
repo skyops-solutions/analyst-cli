@@ -1,0 +1,29 @@
+# Secrets
+.env
+
+# Data (SQLite DB, ChromaDB)
+/data/
+
+# Project docs (internal specs, not needed by users)
+/docs/
+CLAUDE.md
+pyrightconfig.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
