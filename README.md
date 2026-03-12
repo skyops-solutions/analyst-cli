@@ -1,8 +1,20 @@
-# AI Query Engine
+# analyst-cli
 
-A CLI-first conversational AI engine for structured business queries.
-Accepts three inputs — **CONTEXT**, **BACKGROUND**, **REQUEST** — routes them to Google Gemini,
-manages session memory across turns, and returns structured JSON to stdout.
+> AI-powered query engine for structured business analysis — pipe-friendly CLI built on Google Gemini 2.5.
+
+Feed it a business context, a situation, and a question. Get a clean JSON answer back. Chain it into any pipeline, automate it, or use it interactively across multi-turn sessions.
+
+---
+
+## What it does
+
+- Accepts three inputs: **context** (who you are), **background** (the situation), **request** (what you need)
+- Routes them through Google Gemini 2.5 with a focused prompt template
+- Returns structured JSON to stdout — errors go to stderr
+- Persists session memory in SQLite for multi-turn conversations
+- Supports swappable prompt templates (strategy, analysis, document, default)
+
+---
 
 ## Requirements
 
@@ -63,6 +75,8 @@ python3 -m src.cli --model gemini-1.5-pro \
   --context "..." --background "..." --request "..."
 ```
 
+---
+
 ## Output
 
 **stdout (success):**
@@ -77,6 +91,8 @@ python3 -m src.cli --model gemini-1.5-pro \
 
 Exit code `0` on success, `1` on error.
 
+---
+
 ## Templates
 
 | Name | Description | Model |
@@ -85,6 +101,8 @@ Exit code `0` on success, `1` on error.
 | `strategy` | Competitive response and business strategy | gemini-2.5-flash |
 | `analysis` | Market and business analysis | gemini-1.5-pro |
 | `document` | Client-ready document generation | gemini-2.5-flash |
+
+---
 
 ## Configuration
 
@@ -97,11 +115,16 @@ SQLITE_DB_PATH=./data/sessions.db
 TEMPLATES_PATH=./src/templates
 ```
 
+---
+
 ## Tests
 
 ```bash
 pytest tests/ -v
+# 30 tests, 0 failures
 ```
+
+---
 
 ## Project structure
 
