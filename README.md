@@ -1,25 +1,32 @@
 # analyst-cli
 
-> AI-powered query engine for structured business analysis — pipe-friendly CLI built on Google Gemini 2.5.
+> Your on-demand AI business analyst. Ask a question, get a structured answer — from the command line or any automated pipeline.
 
-Feed it a business context, a situation, and a question. Get a clean JSON answer back. Chain it into any pipeline, automate it, or use it interactively across multi-turn sessions.
-
----
-
-## What it does
-
-- Accepts three inputs: **context** (who you are), **background** (the situation), **request** (what you need)
-- Routes them through Google Gemini 2.5 with a focused prompt template
-- Returns structured JSON to stdout — errors go to stderr
-- Persists session memory in SQLite for multi-turn conversations
-- Supports swappable prompt templates (strategy, analysis, document, default)
+Give it your company context, describe the situation, ask your question.
+It thinks it through and gives you a clear, actionable response in seconds.
 
 ---
 
-## Requirements
+## What problem it solves
 
-- Python 3.11+
-- Google Gemini API key
+Business decisions need fast, structured thinking. Hiring a consultant takes time and money. ChatGPT gives generic answers. This tool is different — it knows your context, remembers the conversation, and gives focused responses tuned to your business situation.
+
+Use it to:
+- Draft competitive response strategies
+- Analyze market shifts and risks
+- Generate client-ready documents
+- Get structured answers to any business question
+
+---
+
+## How it works
+
+1. You provide three things: **who you are**, **what's happening**, **what you need**
+2. The tool routes your query through Google Gemini 2.5 with a focused prompt
+3. You get a clean, structured JSON response — ready to use or pipe into other tools
+4. Follow up with more questions — it remembers the full session context
+
+---
 
 ## Setup
 
@@ -31,7 +38,7 @@ cp .env.example .env
 
 ## Usage
 
-### Single query
+### Ask a business question
 
 ```bash
 python3 -m src.cli \
@@ -40,7 +47,7 @@ python3 -m src.cli \
   --request "Draft a competitive response strategy"
 ```
 
-### Multi-turn session
+### Continue the conversation
 
 ```bash
 # Start a session
@@ -50,28 +57,29 @@ python3 -m src.cli \
   --background "New competitor launched at half our price" \
   --request "Draft a competitive response strategy"
 
-# Follow-up (context/background loaded from session)
+# Drill deeper — context is remembered
 python3 -m src.cli --session my-session --request "Expand on point 2"
 ```
 
-### Stdin (JSON)
+### Pipe it into other tools
 
 ```bash
 echo '{"context":"...","background":"...","request":"..."}' | python3 -m src.cli
 ```
 
-### Templates
+---
+
+## Analysis modes
+
+| Template | Best for |
+|----------|----------|
+| `default` | General business questions |
+| `strategy` | Competitive response, go-to-market, positioning |
+| `analysis` | Market research, risk assessment, deep analysis |
+| `document` | Client-ready reports and proposals |
 
 ```bash
-# List available templates
-python3 -m src.cli --list-templates
-
-# Use a specific template
 python3 -m src.cli --template strategy \
-  --context "..." --background "..." --request "..."
-
-# Override model
-python3 -m src.cli --model gemini-1.5-pro \
   --context "..." --background "..." --request "..."
 ```
 
@@ -79,64 +87,20 @@ python3 -m src.cli --model gemini-1.5-pro \
 
 ## Output
 
-**stdout (success):**
 ```json
-{"status": "ok", "response": "...", "model": "gemini-2.5-flash", "session_id": "abc123", "tokens_used": 412, "template": "default"}
+{"status": "ok", "response": "...", "model": "gemini-2.5-flash", "session_id": "abc123", "tokens_used": 412}
 ```
 
-**stderr (error):**
-```json
-{"status": "error", "code": "api_error", "message": "..."}
-```
-
-Exit code `0` on success, `1` on error.
+Errors go to stderr. Exit code `0` on success, `1` on error.
 
 ---
 
-## Templates
+## Requirements
 
-| Name | Description | Model |
-|------|-------------|-------|
-| `default` | General-purpose business query | gemini-2.5-flash |
-| `strategy` | Competitive response and business strategy | gemini-2.5-flash |
-| `analysis` | Market and business analysis | gemini-1.5-pro |
-| `document` | Client-ready document generation | gemini-2.5-flash |
-
----
-
-## Configuration
+- Python 3.11+
+- Google Gemini API key
 
 ```env
 GEMINI_API_KEY=        # required
 GEMINI_MODEL=gemini-2.5-flash
-MAX_TOKENS=1024
-CONTEXT_WINDOW=10
-SQLITE_DB_PATH=./data/sessions.db
-TEMPLATES_PATH=./src/templates
-```
-
----
-
-## Tests
-
-```bash
-pytest tests/ -v
-# 30 tests, 0 failures
-```
-
----
-
-## Project structure
-
-```
-src/
-  cli.py              → Entry point (argparse + stdin)
-  engine.py           → Core loop (prompt + history + Gemini)
-  gemini.py           → Gemini API client (retry logic)
-  context.py          → Session sliding window
-  memory.py           → SQLite session storage
-  output.py           → JSON stdout/stderr formatter
-  template_loader.py  → Template loader
-  templates/          → TOML + Markdown template library
-tests/                → pytest test suite
 ```
